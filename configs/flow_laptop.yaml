@@ -1,0 +1,13 @@
+# Head A (flow) tuned for an 8GB laptop GPU (e.g. RTX 3070 Laptop).
+# Small per-step batch + accumulation keeps effective batch ~64 while fitting VRAM;
+# the OOM risk is the SigLIP vision encoder (512x512 x2 cameras), not the expert.
+defaults: base.yaml
+
+head: flow
+lr: 3.0e-4
+output_dir: outputs/flow
+
+batch_size: 2                  # if OOM -> 1 (and grad_accum -> 64); if comfortable -> 4 (accum -> 16)
+grad_accum: 32                 # effective batch = 2 * 32 = 64
+gradient_checkpointing: true   # trade compute for VRAM
+# precision: bf16 inherited from base.yaml (native on Ampere; used automatically on CUDA)

@@ -1,0 +1,6 @@
+# Head B — deterministic L1 regression.
+defaults: base.yaml
+
+head: regression
+lr: 3.0e-4
+output_dir: outputs/regression

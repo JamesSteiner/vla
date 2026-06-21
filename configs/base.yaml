@@ -1,0 +1,28 @@
+# Shared settings. Per-head configs override `head` (and lr for diffusion).
+# Same dataset, same step budget, same seed across heads => fair comparison.
+
+checkpoint: lerobot/smolvla_base
+dataset_repo_id: lerobot/libero   # official v3.0, all 4 suites. Fast 1-suite start: lerobot/libero_spatial_image
+freeze_vlm: true
+
+# optimisation. NOTE: run_full uses SmolVLA's BUILT-IN preset for the optimizer AND the
+# LR schedule (get_optimizer_preset / get_scheduler_preset) — same as lerobot-train — so the
+# lr/weight_decay/betas/grad_clip below are NOT used for the flow run. They're kept for reference:
+# preset = lr 1e-4, betas (0.9,0.95), wd 1e-10, grad_clip 10, warmup 1000, cosine-decay to 2.5e-6 / 30k.
+lr: 1.0e-4
+weight_decay: 1.0e-10
+grad_clip: 10.0
+betas: [0.9, 0.95]
+precision: bf16
+batch_size: 64            # per-step micro-batch. Lower to 2-8 on a small (6-8GB) laptop GPU.
+grad_accum: 1             # effective batch = batch_size * grad_accum. Raise to keep eff batch ~64 on small GPUs.
+gradient_checkpointing: false  # trade compute for VRAM; helps most once more of the backbone is unfrozen
+max_steps: 40000          # LR fully anneals by 30k (warmup 1k -> cosine decay); flow gated 70% at 30k.
+                          # 40k = full anneal + a little floor refinement. Same budget for all 3 heads.
+val_every: 500
+save_every: 10000         # write an intermediate checkpoint every N steps (gate these to find the plateau)
+num_workers: 4            # dataloader workers. Set 0 on Windows if the loader hangs/errors.
+seed: 0
+
+# logging
+wandb_project: vla-action-heads

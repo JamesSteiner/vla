@@ -1,0 +1,27 @@
+[project]
+name = "vla"
+version = "0.1.0"
+description = "Controlled action-head comparison (regression / diffusion / flow matching) on SmolVLA + LIBERO"
+requires-python = ">=3.12"  # lerobot requires >=3.12
+dependencies = [
+    # SmolVLA policy + LIBERO sim env. Exact versions are pinned in uv.lock (the
+    # lockfile is the record of truth — `uv sync` reproduces it exactly).
+    "lerobot[smolvla,libero]",
+    "diffusers>=0.27",  # DDIMScheduler / schedule helpers for the diffusion head
+    "wandb",
+    "pyyaml",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vla"]
+
+# To read / patch LeRobot internals during the head swap, clone it as a sibling
+# and switch to an editable install temporarily:
+#   git clone https://github.com/huggingface/lerobot ../lerobot
+#   then uncomment:
+# [tool.uv.sources]
+# lerobot = { path = "../lerobot", editable = true }

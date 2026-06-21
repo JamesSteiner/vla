@@ -1,0 +1,7 @@
+# Head A — flow matching (native SmolVLA expert). The reference baseline.
+# Simplest honest setup: fine-tune the unmodified policy (no custom head).
+defaults: base.yaml   # merge manually in train.py (or use your config lib)
+
+head: flow
+output_dir: outputs/flow
+# lr/weight_decay/etc. inherited from base.yaml (k1000dai recipe)

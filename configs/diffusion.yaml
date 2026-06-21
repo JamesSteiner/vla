@@ -1,0 +1,13 @@
+# Head C — diffusion (DDPM train / DDIM inference).
+# The DDPM epsilon objective is noisier/harder to fit than flow or L1 and is less sample-efficient,
+# so diffusion gets a LONGER schedule (LR decay over 60k rather than 30k) to reach its plateau.
+defaults: base.yaml
+
+head: diffusion
+output_dir: outputs/diffusion
+max_steps: 60000
+scheduler_decay_steps: 60000   # stretch the LR cosine decay (default preset floors at 30k)
+diffusion:
+  train_timesteps: 100
+  infer_steps: 10        # DDIM, not full DDPM
+  beta_schedule: squaredcos_cap_v2

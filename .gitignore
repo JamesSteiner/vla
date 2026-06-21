@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# uv
+.python-version
+
+# Editors / OS / tooling
+.vscode/
+.idea/
+.claude/
+.DS_Store
+*.swp
+
+# Experiment artifacts
+wandb/
+outputs/
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+*.safetensors
+
+# Data — too large for git, downloaded on demand.
+# Anchored to repo root (leading /) so the src/vla/data/ PACKAGE is NOT ignored.
+/data/
+/datasets/
+/libero/
+*.h5
+*.hdf5
+*.tfrecord*
+
+# Logs
+*.log
+logs/
